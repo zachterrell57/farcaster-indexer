@@ -11,7 +11,7 @@ import { Profile } from '../types/db'
  */
 export async function insertProfile(msg: protobufs.IdRegistryEvent) {
   const profile: Profile = {
-    id: msg.fid,
+    fid: msg.fid,
     owner: formatHash(msg.to),
     registered_at: new Date(),
     updated_at: new Date(),
@@ -21,7 +21,7 @@ export async function insertProfile(msg: protobufs.IdRegistryEvent) {
     await db
       .insertInto('profile')
       .values(profile)
-      .onConflict((oc) => oc.column('id').doNothing())
+      .onConflict((oc: any) => oc.column('id').doNothing())
       .executeTakeFirstOrThrow()
     console.log(`PROFILE INSERTED -- ${msg.fid}`)
   } catch (error) {
@@ -40,13 +40,13 @@ export async function upsertProfiles(profiles: Profile | Profile[]) {
     await db
       .insertInto('profile')
       .values(profiles)
-      .onConflict((oc) => oc.column('id').doNothing())
+      .onConflict((oc: any) => oc.column('id').doNothing())
       .executeTakeFirstOrThrow()
 
     console.log(
       Array.isArray(profiles)
         ? `${profiles.length} USERS DATA UPSERTED`
-        : `USER DATA UPSERTED ${profiles.id}`
+        : `USER DATA UPSERTED ${profiles.fid}`
     )
   } catch (error) {
     console.error('ERROR UPSERTING USER DATA', error)
@@ -59,7 +59,7 @@ export async function upsertProfiles(profiles: Profile | Profile[]) {
  */
 export async function updateProfileOwner(msg: protobufs.IdRegistryEvent) {
   const profile: Profile = {
-    id: msg.fid,
+    fid: msg.fid,
     owner: formatHash(msg.to),
     updated_at: new Date(),
   }
@@ -102,7 +102,7 @@ export async function updateProfile(msg: MergeMessageHubEvent) {
   }
 
   const profile: Profile = {
-    id: fid,
+    fid: fid,
     [key]: msg.data.userDataBody!.value,
     updated_at: new Date(),
   }
@@ -134,7 +134,7 @@ export async function deletePartOfProfile(msg: MergeMessageHubEvent) {
   }
 
   const profile: Profile = {
-    id: msg.data.fid,
+    fid: msg.data.fid,
     [key]: null,
     updated_at: new Date(),
   }

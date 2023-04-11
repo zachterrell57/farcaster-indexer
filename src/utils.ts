@@ -39,7 +39,7 @@ export function formatReactions(events: MergeMessageHubEvent[]) {
 export function formatUserData(events: MergeMessageHubEvent[], fid: number) {
   // Each aspect of a profile has it's own message, so we have to match the types according to data.userDataBody.type
   return {
-    id: fid,
+    fid: fid,
     avatar_url:
       events.find(
         (user) => user.data.userDataBody!.type === 'USER_DATA_TYPE_PFP'

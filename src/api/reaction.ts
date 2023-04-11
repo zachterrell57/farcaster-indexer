@@ -23,7 +23,7 @@ export async function insertReaction(msg: MergeMessageHubEvent) {
     await db
       .insertInto('reaction')
       .values(reaction)
-      .onConflict((oc) =>
+      .onConflict((oc: any) =>
         oc.columns(['fid', 'target_cast', 'type']).doNothing()
       )
       .executeTakeFirstOrThrow()
@@ -44,7 +44,7 @@ export async function upsertReactions(reactions: Reaction[]) {
     await db
       .insertInto('reaction')
       .values(reactions)
-      .onConflict((oc) =>
+      .onConflict((oc: any) =>
         oc.columns(['fid', 'target_cast', 'type']).doNothing()
       )
       .executeTakeFirstOrThrow()

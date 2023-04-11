@@ -22,7 +22,7 @@ export type Cast = {
 }
 
 export type Profile = {
-  id: number
+  fid: number
   owner?: string | null
   username?: string | null
   display_name?: string | null

@@ -24,7 +24,7 @@ interface EventTable {
 }
 
 interface ProfileTable {
-  id: number
+  fid: number
   owner: string | null
   username: string | null
   display_name: string | null
